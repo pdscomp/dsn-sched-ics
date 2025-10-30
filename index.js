@@ -47,9 +47,16 @@ app.get('/caps-dsn-sched.ics', async (req, res) => {
       console.log('Serving from cache...');
     }
 
-    const cal = ical.default({domain: 'spsweb.fltops.jpl.nasa.gov', name: 'CAPS DSN Sched'});
+    const cal = ical.default({domain: 'spsweb.fltops.jpl.nasa.gov', name: 'CAPS DSN Sched', timezone: 'UTC'});
 
     db.get('passes').value().forEach(pass => {
+      // Trim string values
+      for (const key in pass) {
+        if (typeof pass[key] === 'string') {
+          pass[key] = pass[key].trim();
+        }
+      }
+
       const summary = `${pass.projuser} DSS-${pass.facility} ${pass.activity} (${pass.configcode})`
       const fields = ['version', 'week', 'year', 'starttime', 'bot', 'eot', 'endtime', 'facility', 'projuser', 'activity', 'configcode', 'equipmentlist', 'wrkcat', 'scheduleitemid', 'soecode', 'activityid', 'activitytype'];
       let attributes = '';
@@ -65,8 +72,7 @@ app.get('/caps-dsn-sched.ics', async (req, res) => {
         description: description,
         uid: pass.scheduleitemid.toString(),
         sequence: pass.sequence,
-        lastModified: new Date(pass.lastModified),
-        timezone: 'UTC'
+        lastModified: new Date(pass.lastModified)
       });
     });
 
