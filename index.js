@@ -14,12 +14,13 @@ const db = low(adapter);
 db.defaults({ passes: [], lastFetch: null }).write();
 
 // Edit me if you need to!
-const DATA_URL = 'https://spsweb.fltops.jpl.nasa.gov/rest/ops/info/activity/caps/json';
-const CAL_NAME = 'CAPS DSN Sched'
-const CAL_DOMAIN = 'spsweb.fltops.jpl.nasa.gov'
+const DATA_URL = process.env.DATA_URL || 'https://spsweb.fltops.jpl.nasa.gov/rest/ops/info/activity/caps/json';
+const CAL_NAME = process.env.CAL_NAME || 'CAPS DSN Sched';
+const CAL_DOMAIN = process.env.CAL_DOMAIN || 'spsweb.fltops.jpl.nasa.gov';
 const CACHE_DURATION = process.env.CACHE_DURATION || 60 * 60 * 1000; // 1 hour in milliseconds
+const CAL_URL = process.env.CAL_URL || '/caps-dsn-sched.ics';
 
-app.get('/caps-dsn-sched.ics', async (req, res) => {
+app.get(CAL_URL, async (req, res) => {
   try {
     const now = Date.now();
     const lastFetch = db.get('lastFetch').value();

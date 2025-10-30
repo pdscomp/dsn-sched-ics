@@ -25,6 +25,21 @@ When a request is made to this endpoint, the server:
 
 This allows you to subscribe to the `/caps-dsn-sched.ics` URL from your calendar application and always have the latest DSN schedule.
 
+## Configuration
+
+This application can be configured using environment variables. This is useful when deploying with a container or to a cloud platform.
+
+| Variable         | Description                                                                 | Default                                                              |
+| ---------------- | --------------------------------------------------------------------------- | -------------------------------------------------------------------- |
+| `DATA_URL`       | The URL to fetch the schedule data from.                                    | `https://spsweb.fltops.jpl.nasa.gov/rest/ops/info/activity/caps/json`  |
+| `CAL_NAME`       | The name of the generated iCal calendar.                                    | `CAPS DSN Sched`                                                     |
+| `CAL_DOMAIN`     | The domain for the iCal calendar.                                           | `spsweb.fltops.jpl.nasa.gov`                                         |
+| `CACHE_DURATION` | The cache duration in milliseconds.                                         | `3600000` (1 hour)                                                   |
+| `CAL_URL`        | The URL path for the iCal endpoint.                                         | `/caps-dsn-sched.ics`                                                |
+| `PORT`           | The port the server listens on.                                             | `3000`                                                               |
+
+**Note:** By default, this application is configured to generate an iCal feed for the [CAPSTONE](https://en.wikipedia.org/wiki/CAPSTONE) satellite.
+
 ## License
 
 This project is licensed under the MIT License.
