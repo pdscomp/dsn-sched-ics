@@ -9,6 +9,59 @@ A running instance of the main branch of this application is available at:
 
 Note: This instance is pre-configured for the [CAPSTONE satellite](https://en.wikipedia.org/wiki/CAPSTONE).
 
+## Adding to Your Calendar
+
+You can subscribe to the iCal feed from most calendar applications. Here are instructions for some popular clients:
+
+### Mobile
+
+**iPhone Calendar**
+
+1.  Go to `Settings > Calendar > Accounts > Add Account > Other`.
+2.  Select `Add Subscribed Calendar`.
+3.  Paste the calendar URL and tap `Next`.
+4.  Tap `Save`.
+
+**Android Calendar**
+
+*Subscriptions are managed through your Google Account.*
+
+1.  Follow the instructions for **Google Calendar (Web)** below.
+2.  Open the Calendar app on your Android device.
+3.  Go to `Settings`, select the calendar, and ensure "Sync" is enabled.
+
+### Desktop
+
+**Apple Calendar (macOS)**
+
+1.  Open the Calendar app.
+2.  Go to `File > New Calendar Subscription`.
+3.  Paste the calendar URL and click `Subscribe`.
+4.  Configure the settings and click `OK`.
+
+**Microsoft Outlook (Desktop)**
+
+1.  Open Outlook and go to the Calendar view.
+2.  Right-click on "My Calendars," then select `Add Calendar > From Internet`.
+3.  Paste the calendar URL and click `OK`.
+4.  Click `Yes` to confirm the subscription.
+
+### Web
+
+**GMail / Google Calendar**
+
+1.  Open [Google Calendar](https://calendar.google.com) in your web browser.
+2.  On the left side, next to "Other calendars," click the `+` button.
+3.  Select "From URL".
+4.  Paste the calendar URL and click "Add calendar".
+
+**Microsoft Outlook (Web)**
+
+1.  Open Outlook on the web and go to the Calendar section.
+2.  In the navigation pane, select "Add calendar".
+3.  Select "Subscribe from web".
+4.  Paste the calendar URL and click "Import".
+
 ## Dependencies
 
 This project uses the following dependencies:
