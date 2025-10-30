@@ -1,6 +1,7 @@
+
 const express = require('express');
 const axios = require('axios');
-const ics = require('ics');
+const ical = require('ical-generator');
 const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 
@@ -47,31 +48,23 @@ app.get('/capstone-dsn.ics', async (req, res) => {
       console.log('Serving from cache...');
     }
 
-    const events = db.get('passes').value().map(pass => {
-      const start = new Date(pass.starttime);
-      const end = new Date(pass.endtime);
-      const lastModified = new Date(pass.lastModified);
-      return {
-        title: pass.activity,
-        start: [start.getUTCFullYear(), start.getUTCMonth() + 1, start.getUTCDate(), start.getUTCHours(), start.getUTCMinutes()],
-        end: [end.getUTCFullYear(), end.getUTCMonth() + 1, end.getUTCDate(), end.getUTCHours(), end.getUTCMinutes()],
-        startOutputType: 'utc',
-        endOutputType: 'utc',
+    const cal = ical.default({domain: 'spsweb.fltops.jpl.nasa.gov', name: 'DSN Passes'});
+
+    db.get('passes').value().forEach(pass => {
+      cal.createEvent({
+        start: new Date(pass.starttime),
+        end: new Date(pass.endtime),
+        summary: pass.activity,
         description: `Project User: ${pass.projuser}\nActivity Type: ${pass.activitytype}\nFacility: ${pass.facility}`,
         uid: pass.scheduleitemid.toString(),
         sequence: pass.sequence,
-        lastModified: [lastModified.getUTCFullYear(), lastModified.getUTCMonth() + 1, lastModified.getUTCDate(), lastModified.getUTCHours(), lastModified.getUTCMinutes()],
-      };
+        lastModified: new Date(pass.lastModified),
+        timezone: 'UTC'
+      });
     });
 
-    const { error, value } = ics.createEvents(events);
-
-    if (error) {
-      throw error;
-    }
-
     res.setHeader('Content-Type', 'text/calendar');
-    res.send(value);
+    res.send(cal.toString());
 
   } catch (error) {
     console.error('Error details:', error);
