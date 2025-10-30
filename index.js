@@ -13,8 +13,11 @@ const db = low(adapter);
 // Set some defaults if the database is new
 db.defaults({ passes: [], lastFetch: null }).write();
 
-const CACHE_DURATION = process.env.CACHE_DURATION || 60 * 60 * 1000; // 1 hour in milliseconds
+// Edit me if you need to!
 const DATA_URL = 'https://spsweb.fltops.jpl.nasa.gov/rest/ops/info/activity/caps/json';
+const CAL_NAME = 'CAPS DSN Sched'
+const CAL_DOMAIN = 'spsweb.fltops.jpl.nasa.gov'
+const CACHE_DURATION = process.env.CACHE_DURATION || 60 * 60 * 1000; // 1 hour in milliseconds
 
 app.get('/caps-dsn-sched.ics', async (req, res) => {
   try {
@@ -47,7 +50,7 @@ app.get('/caps-dsn-sched.ics', async (req, res) => {
       console.log('Serving from cache...');
     }
 
-    const cal = ical.default({domain: 'spsweb.fltops.jpl.nasa.gov', name: 'CAPS DSN Sched', timezone: 'UTC'});
+    const cal = ical.default({domain: CAL_DOMAIN, name: CAL_NAME, timezone: 'UTC'});
 
     db.get('passes').value().forEach(pass => {
       // Trim string values
@@ -57,7 +60,7 @@ app.get('/caps-dsn-sched.ics', async (req, res) => {
         }
       }
 
-      const summary = `${pass.projuser} DSS-${pass.facility} ${pass.activity} (${pass.configcode})`
+      const summary = `${pass.projuser} ${pass.activity} DSS-${pass.facility} (${pass.configcode})`
       const fields = ['version', 'week', 'year', 'starttime', 'bot', 'eot', 'endtime', 'facility', 'projuser', 'activity', 'configcode', 'equipmentlist', 'wrkcat', 'scheduleitemid', 'soecode', 'activityid', 'activitytype'];
       let attributes = '';
       for (const key of fields) {
@@ -66,8 +69,8 @@ app.get('/caps-dsn-sched.ics', async (req, res) => {
       const description = `${summary}\n\n${attributes}`;
 
       cal.createEvent({
-        start: new Date(pass.bot),
-        end: new Date(pass.eot),
+        start: new Date(pass.bot + 'Z'),
+        end: new Date(pass.eot + 'Z'),
         summary: summary,
         description: description,
         uid: pass.scheduleitemid.toString(),
