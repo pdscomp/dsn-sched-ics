@@ -1,4 +1,3 @@
-
 const express = require('express');
 const axios = require('axios');
 const ical = require('ical-generator');
@@ -17,7 +16,7 @@ db.defaults({ passes: [], lastFetch: null }).write();
 const CACHE_DURATION = process.env.CACHE_DURATION || 60 * 60 * 1000; // 1 hour in milliseconds
 const DATA_URL = 'https://spsweb.fltops.jpl.nasa.gov/rest/ops/info/activity/caps/json';
 
-app.get('/capstone-dsn.ics', async (req, res) => {
+app.get('/dsn-caps.ics', async (req, res) => {
   try {
     const now = Date.now();
     const lastFetch = db.get('lastFetch').value();
@@ -48,14 +47,20 @@ app.get('/capstone-dsn.ics', async (req, res) => {
       console.log('Serving from cache...');
     }
 
-    const cal = ical.default({domain: 'spsweb.fltops.jpl.nasa.gov', name: 'DSN Passes'});
+    const cal = ical.default({domain: 'spsweb.fltops.jpl.nasa.gov', name: 'CAPS DSN Sched'});
 
     db.get('passes').value().forEach(pass => {
+      const fields = ['version', 'week', 'year', 'starttime', 'bot', 'eot', 'endtime', 'facility', 'projuser', 'activity', 'configcode', 'equipmentlist', 'wrkcat', 'scheduleitemid', 'soecode', 'activityid', 'activitytype'];
+      let description = '';
+      for (const key of fields) {
+        description += `${key.toUpperCase()}: ${pass[key]}`;
+      }
+
       cal.createEvent({
-        start: new Date(pass.starttime),
-        end: new Date(pass.endtime),
+        start: new Date(pass.bot),
+        end: new Date(pass.eot),
         summary: pass.activity,
-        description: `Project User: ${pass.projuser}\nActivity Type: ${pass.activitytype}\nFacility: ${pass.facility}`,
+        description: description,
         uid: pass.scheduleitemid.toString(),
         sequence: pass.sequence,
         lastModified: new Date(pass.lastModified),
