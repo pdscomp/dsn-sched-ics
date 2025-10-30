@@ -16,7 +16,7 @@ db.defaults({ passes: [], lastFetch: null }).write();
 const CACHE_DURATION = process.env.CACHE_DURATION || 60 * 60 * 1000; // 1 hour in milliseconds
 const DATA_URL = 'https://spsweb.fltops.jpl.nasa.gov/rest/ops/info/activity/caps/json';
 
-app.get('/dsn-caps.ics', async (req, res) => {
+app.get('/caps-dsn-sched.ics', async (req, res) => {
   try {
     const now = Date.now();
     const lastFetch = db.get('lastFetch').value();
@@ -59,7 +59,7 @@ app.get('/dsn-caps.ics', async (req, res) => {
       cal.createEvent({
         start: new Date(pass.bot),
         end: new Date(pass.eot),
-        summary: pass.activity,
+        summary: `${pass.projuser} DSS-${pass.facility} ${pass.activity} (${pass.configcode})`,
         description: description,
         uid: pass.scheduleitemid.toString(),
         sequence: pass.sequence,
