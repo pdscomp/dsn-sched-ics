@@ -50,16 +50,18 @@ app.get('/caps-dsn-sched.ics', async (req, res) => {
     const cal = ical.default({domain: 'spsweb.fltops.jpl.nasa.gov', name: 'CAPS DSN Sched'});
 
     db.get('passes').value().forEach(pass => {
+      const summary = `${pass.projuser} DSS-${pass.facility} ${pass.activity} (${pass.configcode})`
       const fields = ['version', 'week', 'year', 'starttime', 'bot', 'eot', 'endtime', 'facility', 'projuser', 'activity', 'configcode', 'equipmentlist', 'wrkcat', 'scheduleitemid', 'soecode', 'activityid', 'activitytype'];
-      let description = '';
+      let attributes = '';
       for (const key of fields) {
-        description += `${key.toUpperCase()}: ${pass[key]}`;
+        attributes += `${key.toUpperCase()}: ${pass[key]}\n`;
       }
+      const description = `${summary}\n\n${attributes}`;
 
       cal.createEvent({
         start: new Date(pass.bot),
         end: new Date(pass.eot),
-        summary: `${pass.projuser} DSS-${pass.facility} ${pass.activity} (${pass.configcode})`,
+        summary: summary,
         description: description,
         uid: pass.scheduleitemid.toString(),
         sequence: pass.sequence,
