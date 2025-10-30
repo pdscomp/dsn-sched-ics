@@ -2,6 +2,13 @@
 
 This project generates a dynamic iCal calendar endpoint with Node.js to easily track your favorite satellite in your favorite Calendar app! It fetches data from NASA's Deep Space Network (DSN) schedule and provides it in a format that can be imported into any calendar application that supports iCal.
 
+## Live Endpoint
+
+A running instance of the main branch of this application is available at:
+[https://dsn-sched-ics.fly.dev/caps-dsn-sched.ics](https://dsn-sched-ics.fly.dev/caps-dsn-sched.ics)
+
+Note: This instance is pre-configured for the [CAPSTONE satellite](https://en.wikipedia.org/wiki/CAPSTONE).
+
 ## Dependencies
 
 This project uses the following dependencies:
