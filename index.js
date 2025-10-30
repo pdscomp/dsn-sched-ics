@@ -5,7 +5,7 @@ const low = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 const adapter = new FileSync('db.json');
 const db = low(adapter);
