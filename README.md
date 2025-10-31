@@ -96,7 +96,7 @@ This application can be configured using environment variables. This is useful w
 | `CAL_DOMAIN`     | The domain for the iCal calendar.                                           | `spsweb.fltops.jpl.nasa.gov`                                         |
 | `CACHE_DURATION` | The cache duration in milliseconds.                                         | `3600000` (1 hour)                                                   |
 | `CAL_URL`        | The URL path for the iCal endpoint.                                         | `/caps-dsn-sched.ics`                                                |
-| `PORT`           | The port the server listens on.                                             | `3000`                                                               |
+| `PORT`           | The port the server listens on.                                             | `8080`                                                               |
 
 **Note:** By default, this application is configured to generate an iCal feed for the [CAPSTONE](https://en.wikipedia.org/wiki/CAPSTONE) satellite.
 
